@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171321">
+  <meta name="description" content="Tucson Tycoon — финансы, фарм и перекуп Arizona RP Tucson">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Tucson Tycoon</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">T</div><div><b>TUCSON</b><span>TYCOON</span></div></div>
+      <div class="server-pill"><i></i> ARIZONA RP · TUCSON</div>
+      <nav id="nav">
+        <button class="nav-btn active" data-page="dashboard"><span>▦</span> Обзор</button>
+        <button class="nav-btn" data-page="farm"><span>◷</span> Фарм</button>
+        <button class="nav-btn" data-page="market"><span>⌕</span> Маркет</button>
+        <button class="nav-btn" data-page="flips"><span>⇄</span> Перекуп</button>
+        <button class="nav-btn" data-page="history"><span>▤</span> История</button>
+        <button class="nav-btn" data-page="settings"><span>⚙</span> Настройки</button>
+      </nav>
+      <div class="sidebar-foot">Локальная версия · v0.1.0</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">ЛИЧНЫЙ ФИНАНСОВЫЙ ЦЕНТР</div><h1 id="pageTitle">Обзор</h1></div>
+        <div class="top-actions"><span class="status-dot"></span><span>Данные на этом устройстве</span></div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="hero-card">
+          <div class="hero-top"><span>ТЕКУЩИЙ КАПИТАЛ</span><span class="tag">TUCSON</span></div>
+          <div class="big-money" id="balanceHero">323 222 784 <small>вирт.</small></div>
+          <div class="goal-row"><span>Цель: <b id="goalLabel">3 360 000 000</b></span><span id="progressLabel">9,62%</span></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="hero-bottom"><span>Осталось накопить</span><b id="remainingHero">3 036 777 216</b></div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><span>Чистый доход / час</span><strong id="hourlyStat">—</strong><small>По последнему расчёту</small></article>
+          <article class="stat-card"><span>Прибыль за смены</span><strong id="farmProfitStat">0</strong><small>Суммарно записано</small></article>
+          <article class="stat-card"><span>Прибыль перекупа</span><strong id="flipProfitStat">0</strong><small>Закрытые сделки</small></article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-head"><div><h2>Последние смены</h2><p>Твой фактический заработок</p></div><button class="text-btn" data-go="farm">Все смены →</button></div>
+            <div id="recentSessions" class="empty-state">Пока нет записанных смен. Добавь первую после фарма.</div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h2>Цель накопления</h2><p>План достижения 3,36 млрд</p></div></div>
+            <div class="goal-number" id="goalPercentBig">9,62%</div>
+            <div class="muted">Текущий прогресс</div>
+            <div class="mini-progress"><div id="miniProgress"></div></div>
+            <div class="split-line"><span>Стартовый капитал</span><b id="startingBalance">323 222 784</b></div>
+            <div class="split-line"><span>Целевой капитал</span><b id="targetBalance">3 360 000 000</b></div>
+          </article>
+        </div>
+        <div class="notice"><b>Важно:</b> расчётные бонусы пока являются предположением. Фактические выплаты и расходы записывай по изменению баланса в игре.</div>
+      </section>
+
+      <section class="page" id="page-farm">
+        <div class="section-intro"><div><h2>Калькулятор фарма</h2><p>Считаем фактическую прибыль, бонусы и аренду.</p></div></div>
+        <div class="content-grid">
+          <article class="panel">
+            <h2>Параметры смены</h2>
+            <div class="form-grid">
+              <label>Базовая зарплата за час<input id="basePay" type="number" value="36866700"></label>
+              <label>Бонус госработника (%)<input id="govBonus" type="number" value="20"></label>
+              <label>Бонус машины (%)<input id="carBonus" type="number" value="130"></label>
+              <label>Viking — бонус (%)<input id="vikingBonus" type="number" value="35"></label>
+              <label>Viking — аренда/час<input id="vikingCost" type="number" value="6125000"></label>
+              <label>Охранник — бонус (%)<input id="guardBonus" type="number" value="16"></label>
+              <label>Охранник — аренда/час<input id="guardCost" type="number" value="7800000"></label>
+              <label>Длительность смены (ч)<input id="duration" type="number" min="0" step="0.25" value="3"></label>
+            </div>
+            <label class="checkline"><input id="govActive" type="checkbox"> Госбонус действует в эту смену (10:00–20:00)</label>
+            <label class="checkline"><input id="vikingActive" type="checkbox" checked> Арендован Viking</label>
+            <label class="checkline"><input id="guardActive" type="checkbox" checked> Арендован охранник</label>
+            <label class="checkline"><input id="carActive" type="checkbox" checked> Учитывать бонус собственной машины</label>
+            <label class="checkline"><input id="stackAdditive" type="checkbox" checked> Складывать бонусы аддитивно (предположение)</label>
+            <div class="button-row"><button class="primary-btn" id="calculateBtn">Пересчитать</button><button class="secondary-btn" id="resetCalc">Сбросить</button></div>
+          </article>
+          <article class="panel result-panel">
+            <span class="eyebrow">ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ</span>
+            <div class="result-value" id="netHour">—</div><div class="muted">Чистыми за час после аренды</div>
+            <div class="result-list">
+              <div><span>Зарплата с бонусами</span><b id="grossHour">—</b></div>
+              <div><span>Аренда за час</span><b id="rentHour">—</b></div>
+              <div><span>Чистыми за смену</span><b id="netShift">—</b></div>
+              <div><span>Капитал после смены</span><b id="balanceAfter">—</b></div>
+              <div><span>Осталось до цели</span><b id="leftAfter">—</b></div>
+            </div>
+            <div class="warning-note">Проверь, действительно ли проценты складываются и начисляются от одной базы. Ночная смена не получает госбонус.</div>
+            <button class="primary-btn full" id="saveSession">Сохранить смену</button>
+          </article>
+        </div>
+        <article class="panel table-panel"><div class="panel-head"><div><h2>Журнал смен</h2><p>Фиксируй реальные результаты</p></div></div><div id="sessionsTable" class="empty-state">Смен пока нет.</div></article>
+      </section>
+
+      <section class="page" id="page-market">
+        <div class="section-intro"><div><h2>Маркет Tucson</h2><p>Внешние данные ARZ-MCR и собственные наблюдения.</p></div><a class="primary-link" href="https://wiki.arz-mcr.ru/" target="_blank" rel="noopener">Открыть ARZ-MCR ↗</a></div>
+        <div class="notice"><b>Источник:</b> ARZ-MCR «Лавки Онлайн». Портал сообщает, что лавки поступают из приложения MCR. Прямое API для стороннего чтения пока не подтверждено. Поэтому здесь можно вести собственные наблюдения и открывать первоисточник.</div>
+        <article class="panel">
+          <div class="panel-head"><div><h2>Собственные ценовые наблюдения</h2><p>Записывай найденные цены на Tucson</p></div></div>
+          <div class="form-grid">
+            <label>Предмет<input id="marketItem" placeholder="Название предмета"></label>
+            <label>Цена продажи (за шт.)<input id="marketSell" type="number" placeholder="0"></label>
+            <label>Цена скупки (за шт.)<input id="marketBuy" type="number" placeholder="0"></label>
+            <label>Количество<input id="marketCount" type="number" min="1" value="1"></label>
+            <label>Ник / лавка<input id="marketSeller" placeholder="Необязательно"></label>
+            <label>Ссылка на источник<input id="marketUrl" type="url" placeholder="https://..."></label>
+          </div>
+          <button class="primary-btn" id="addMarket">Добавить наблюдение</button>
+        </article>
+        <article class="panel table-panel"><div class="panel-head"><h2>Наблюдения</h2><span class="muted" id="marketCountLabel">0 записей</span></div><div id="marketTable" class="empty-state">Пока нет наблюдений.</div></article>
+      </section>
+
+      <section class="page" id="page-flips">
+        <div class="section-intro"><div><h2>Перекуп</h2><p>Считаем маржу, расходы и реальную прибыль по каждой сделке.</p></div></div>
+        <article class="panel">
+          <h2>Новая сделка</h2>
+          <div class="form-grid">
+            <label>Предмет / транспорт<input id="flipItem" placeholder="Например, аксессуар"></label>
+            <label>Цена покупки<input id="flipBuy" type="number" placeholder="0"></label>
+            <label>Планируемая продажа<input id="flipSell" type="number" placeholder="0"></label>
+            <label>Дополнительные расходы<input id="flipCosts" type="number" value="0"></label>
+          </div>
+          <div class="deal-preview"><span>Ожидаемая прибыль</span><b id="flipExpected">0</b><span>Рентабельность</span><b id="flipRoi">0%</b></div>
+          <button class="primary-btn" id="addFlip">Добавить сделку</button>
+        </article>
+        <article class="panel table-panel"><div class="panel-head"><div><h2>Портфель сделок</h2><p>Отмечай продажу, когда она состоялась</p></div></div><div id="flipsTable" class="empty-state">Пока нет сделок.</div></article>
+      </section>
+
+      <section class="page" id="page-history">
+        <div class="section-intro"><div><h2>История операций</h2><p>Все записанные смены, сделки и наблюдения.</p></div><button class="secondary-btn" id="exportData">Экспорт резервной копии</button></div>
+        <article class="panel"><div id="historyContent" class="empty-state">История пока пуста.</div></article>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="section-intro"><div><h2>Настройки</h2><p>Параметры финансовой цели и резервное копирование.</p></div></div>
+        <article class="panel">
+          <div class="form-grid">
+            <label>Текущий капитал<input id="settingBalance" type="number"></label>
+            <label>Финансовая цель<input id="settingGoal" type="number"></label>
+            <label>Название сервера<input id="settingServer" value="Tucson"></label>
+          </div>
+          <div class="button-row"><button class="primary-btn" id="saveSettings">Сохранить настройки</button><button class="secondary-btn" id="importDataBtn">Импорт JSON</button><input id="importFile" type="file" accept="application/json" hidden></div>
+          <div class="warning-note">Данные v0.1 хранятся локально в браузере. Очистка данных сайта может удалить их — регулярно экспортируй резервную копию. Синхронизация между устройствами появится в следующем этапе.</div>
+        </article>
+      </section>
+      <footer>© Tucson Tycoon · Неофициальный фанатский инструмент. Не связан с Arizona RP или ARZ-MCR.</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
